@@ -129,3 +129,10 @@ class ebeam_y_1550(core.ComponentModel):
     loaded = np.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'sparams', 'ebeam_y_1550.npz'))
     s_parameters = (loaded['f'], loaded['s'])
     cachable = True
+
+@register_component_model
+class ebeam_dc_te1550(core.ComponentModel):
+    ports = 4
+    loaded = np.load(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'sparams', 'ebeam_dc_te1550.npz'))
+    s_parameters = (loaded['f'], loaded['s'])
+    cachable = True
