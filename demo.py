@@ -45,3 +45,39 @@ plt.plot(freq, one2one)
 plt.suptitle("MZI")
 plt.tight_layout()
 plt.show()
+
+dc = core.ComponentInstance(dev.ebeam_dc_te1550)
+wg1 = core.ComponentInstance(dev.ebeam_wg_integral_1550, extras={'length':73.562196e-6})
+wg2 = core.ComponentInstance(dev.ebeam_wg_integral_1550, extras={'length':73.112196e-6})
+wg3 = core.ComponentInstance(dev.ebeam_wg_integral_1550, extras={'length':64.952196e-6})
+wg4 = core.ComponentInstance(dev.ebeam_wg_integral_1550, extras={'length':65.932196e-6})
+
+conn = [
+    [dc, 1, wg1, 0],
+    [dc, 0, wg2, 0],
+    [dc, 3, wg3, 0],
+    [dc, 2, wg4, 0],
+]
+
+nl = core.Netlist()
+nl.load(conn)
+simu = sim.Simulation(nl)
+
+freq = simu.freq_array
+zero2zero = np.log10(abs(simu.s_parameters()[:, 0, 0])**2)
+zero2one = np.log10(abs(simu.s_parameters()[:, 0, 1])**2)
+one2zero = abs(simu.s_parameters()[:, 0, 2])**2
+one2one = abs(simu.s_parameters()[:, 0, 3])**2
+
+import matplotlib.pyplot as plt
+plt.subplot(221)
+plt.plot(freq, zero2zero)
+plt.subplot(222)
+plt.plot(freq, zero2one)
+plt.subplot(223)
+plt.plot(freq, one2zero)
+plt.subplot(224)
+plt.plot(freq, one2one)
+plt.suptitle("MZI")
+plt.tight_layout()
+plt.show()
